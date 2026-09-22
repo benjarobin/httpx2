@@ -289,9 +289,8 @@ class TunnelHTTPConnection(ConnectionInterface):
 
                 # Upgrade the stream to SSL
                 ssl_context = default_ssl_context() if self._ssl_context is None else self._ssl_context
-                ssl_context.set_alpn_protocols(
-                    (["h2", "http/1.1"] if self._http1 else ["h2"]) if self._http2 else ["http/1.1"]
-                )
+                alpn_protocols = (["h2", "http/1.1"] if self._http1 else ["h2"]) if self._http2 else ["http/1.1"]
+                ssl_context.set_alpn_protocols(alpn_protocols)
 
                 kwargs = {
                     "ssl_context": ssl_context,
